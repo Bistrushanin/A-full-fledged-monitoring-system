@@ -1,0 +1,39 @@
+groups:
+- name: CustomAlerts
+  rules:
+  - alert: HighTraffic
+    expr: rate(node_network_receive_bytes_total[1m]) > 50 * 1024 * 1024
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High traffic on host"
+      description: "Host is receiving more than 50 MB/s of traffic for the last minute."
+
+  - alert: HighCPULoad
+    expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 85
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "High CPU load on host"
+      description: "CPU load is above 85% for the last 5 minutes."
+
+  - alert: TargetDown
+    expr: up == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "A target is down"
+      description: "A target has been down for the last minute."
+
+  - alert: AllTargetsDown
+    expr: sum(up) == 0
+    for: 1m
+    labels:
+      severity: disaster
+    annotations:
+      summary: "All targets are down"
+      description: "All targets have been down for the last minute. Congratulations, you are fired."
+
