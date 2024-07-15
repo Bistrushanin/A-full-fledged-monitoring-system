@@ -1,13 +1,10 @@
-global:
-  resolve_timeout: 5m
-
+---
 route:
   group_by: ['alertname']
   group_wait: 30s
   group_interval: 5m
   repeat_interval: 1h
   receiver: 'web.hook'
-
   routes:
     - receiver: 'telegram'
 
@@ -16,8 +13,9 @@ receivers:
     webhook_configs:
       - url: 'http://127.0.0.1:5001/'
   - name: 'telegram'
-    webhook_configs:
-      - url: 'http://telegram_relay:8080/alert'  
+    telegram_configs:
+      - bot_token: '6955358415:AAElhspQEj42MN_GrJZFygvweEh4iqEo45Q'
+        chat_id: 430815428
 
 inhibit_rules:
   - source_match:
