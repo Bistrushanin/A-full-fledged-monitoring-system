@@ -85,6 +85,18 @@ services:
       - '--config.file=/etc/alertmanager/config.yml'
     networks:
       - monitoring
+      
+  mysql-exporter:
+    image: prom/mysqld-exporter
+    container_name: mysql-exporter
+    volumes:
+      - /home/aleksey/Desktop/Skillbox/06_monitoring/04_dop/04_db_wa_pr_grafana/.my.cnf:/root/.my.cnf
+    ports:
+      - "9104:9104"
+    depends_on:
+      - mysql-db
+    networks:
+      - monitoring
 
 networks:
   monitoring:
