@@ -7,8 +7,8 @@ services:
     environment:
       MYSQL_DATABASE: smartphone_store
       MYSQL_USER: alvlr
-      MYSQL_PASSWORD: 0701
-      MYSQL_ROOT_PASSWORD: root_password_here
+      MYSQL_PASSWORD: test
+      MYSQL_ROOT_PASSWORD: test
     ports:
       - "3306:3306"
     volumes:
@@ -26,7 +26,7 @@ services:
       MYSQL_HOST: mysql-db
       MYSQL_DATABASE: smartphone_store
       MYSQL_USER: alvlr
-      MYSQL_PASSWORD: 0701
+      MYSQL_PASSWORD: test
     depends_on:
       - mysql-db
     container_name: web-app
@@ -90,13 +90,16 @@ services:
     image: prom/mysqld-exporter
     container_name: mysql-exporter
     volumes:
-      - /home/aleksey/Desktop/Skillbox/06_monitoring/04_dop/04_db_wa_pr_grafana/.my.cnf:/root/.my.cnf
+      - ./.my.cnf:/etc/mysql/.my.cnf
     ports:
       - "9104:9104"
     depends_on:
       - mysql-db
     networks:
       - monitoring
+    command:
+      - --config.my-cnf=/etc/mysql/.my.cnf
+      - --no-collect.slave_status
 
 networks:
   monitoring:
